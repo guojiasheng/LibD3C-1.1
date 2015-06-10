@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<classifiers>
+	<classifier name="RandomForest">
+		<parameter>
+			<class>
+				weka.classifiers.trees.RandomForest
+			</class>
+			<options>-I 200</options>
+		</parameter>
+	</classifier>
+	<classifier name="Bagging">
+		<parameter>
+			<class>
+				 weka.classifiers.meta.Bagging
+			</class>
+			<options>
+			    -num-slots 6
+				-W weka.classifiers.trees.J48
+			</options>
+		</parameter>
+	</classifier>
+	
+	<classifier name="Bagging">
+		<parameter>
+			<class>
+				 weka.classifiers.meta.Bagging
+			</class>
+			<options>
+			    -num-slots 6
+				-W weka.classifiers.trees.DecisionStump
+			</options>
+		</parameter>
+	</classifier>
+	
+	<classifier name="Bagging">
+		<parameter>
+			<class>
+				 weka.classifiers.meta.Bagging
+			</class>
+			<options>
+			-num-slots 6
+				-W weka.classifiers.trees.RandomTree
+			</options>
+		</parameter>
+	</classifier>
+	
+		<classifier name="Bagging">
+		<parameter>
+			<class>
+				 weka.classifiers.meta.Bagging
+			</class>
+			<options>
+			-num-slots 6
+				-W weka.classifiers.trees.RandomForest
+			</options>
+		</parameter>
+	</classifier>
+	
+	<classifier name="AdaBoostM1">
+		<parameter>
+			<class>
+				 weka.classifiers.meta.AdaBoostM1
+			</class>
+			<options>
+				-W weka.classifiers.trees.J48
+			</options>
+		</parameter>
+	</classifier>
+	
+	<classifier name="AdaBoostM1">
+		<parameter>
+			<class>
+				 weka.classifiers.meta.AdaBoostM1
+			</class>
+			<options>
+				-W weka.classifiers.trees.DecisionStump
+			</options>
+		</parameter>
+	</classifier>
+	
+	<classifier name="AdaBoostM1">
+		<parameter>
+			<class>
+				 weka.classifiers.meta.AdaBoostM1
+			</class>
+			<options>
+				-W weka.classifiers.trees.RandomTree
+			</options>
+		</parameter>
+	</classifier>
+	
+		<classifier name="AdaBoostM1">
+		<parameter>
+			<class>
+				 weka.classifiers.meta.AdaBoostM1
+			</class>
+			<options>
+				-W weka.classifiers.trees.RandomForest
+			</options>
+		</parameter>
+	</classifier>
+	
+	
+	
+	<classifier name="IB5">
+		<parameter>
+			<class>
+				weka.classifiers.lazy.IBk
+			</class>
+			<options></options>
+			<other name="knn">5</other>
+		</parameter>
+	</classifier>
+	
+	<classifier name="IB10">
+		<parameter>
+			<class>
+				weka.classifiers.lazy.IBk
+			</class>
+			<options></options>
+			<other name="knn">10</other>
+		</parameter>
+	</classifier>
+	
+	<classifier name="OneR">
+		<parameter>
+			<class>
+				weka.classifiers.rules.OneR
+			</class>
+			<options></options>
+		</parameter>
+	</classifier>
+	
+	<classifier name="DecisionTable">
+		<parameter>
+			<class>
+				weka.classifiers.rules.DecisionTable
+			</class>
+			<options></options>
+		</parameter>
+	</classifier>
+	
+	<classifier name="ZeroR">
+		<parameter>
+			<class>
+				weka.classifiers.rules.ZeroR
+			</class>
+			<options></options>
+		</parameter>
+	</classifier>
+	
+	<classifier name="RandomForest">
+		<parameter>
+			<class>
+				weka.classifiers.trees.RandomForest
+			</class>
+			<options>-I 100</options>
+		</parameter>
+	</classifier>
+	
+	<classifier name="NaiveBayes">
+		<parameter>
+			<class>
+				weka.classifiers.bayes.NaiveBayes
+			</class>
+			<options></options>
+		</parameter>
+	</classifier>
+	
+	<classifier name="RandomTree">
+		<parameter>
+			<class>
+				weka.classifiers.trees.RandomTree
+			</class>
+			<options></options>
+		</parameter>
+	</classifier>
+	
+	<classifier name="DecisionStump">
+		<parameter>
+			<class>
+				weka.classifiers.trees.DecisionStump
+			</class>
+			<options></options>
+		</parameter>
+	</classifier>
+	
+	<classifier name="J48">
+		<parameter>
+			<class>
+				weka.classifiers.trees.J48
+			</class>
+			<options></options>
+		</parameter>
+	</classifier>
+</classifiers>

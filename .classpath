@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="D:/gjs/WORK/D3C/lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="D:/gjs/WORK/D3C/lib/LibLINEAR.jar"/>
+	<classpathentry kind="lib" path="D:/gjs/WORK/D3C/lib/liblinear-1.8.jar"/>
+	<classpathentry kind="lib" path="D:/gjs/WORK/D3C/lib/LibSVM.jar"/>
+	<classpathentry kind="lib" path="D:/gjs/WORK/D3C/lib/weka-src.jar"/>
+	<classpathentry kind="lib" path="D:/gjs/WORK/D3C/lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="D:/gjs/WORK/D3C/libsvm.jar"/>
+	<classpathentry kind="lib" path="D:/gjs/WORK/D3C/lib/weka.jar" sourcepath="D:/gjs/WORK/D3C/lib/weka-src.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
