@@ -20,10 +20,13 @@ fold-num is the crossValiditon folds.
 trainFile is the file path for the training data,softWare can only identify .arff file
 
 (3)prediction
+ 
  3.1.balance data
+   
     Java -jar LibD3C-1.0 -p trainFile predictFile resultFile
     
  3.2.imbalance data    
+   
     Java -jar LibD3C-1.0 -m -p trainFile predictFile resultFile
     
 trainFile is the file path for the training data,softWare can only identify .arff file
