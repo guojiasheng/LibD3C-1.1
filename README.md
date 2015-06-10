@@ -11,9 +11,11 @@ usage:
 
 (2)CrossValidation
  2.1.balance data
+   
     Java -jar LibD3C-1.0 -C fold-num trainFile
     
  2.2.imbalance data    
+   
     Java -jar LibD3C-1.0 -m -C fold-num trainFile
     
 fold-num is the crossValiditon folds.
