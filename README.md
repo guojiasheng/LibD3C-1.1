@@ -10,6 +10,7 @@ usage:
 (1)download the LibD3C-1.0.jar and classifier.xml(This file includes all base classifiers for LibD3C-1.0,you can even add other base classifier by yourself)
 
 (2)CrossValidation
+
  2.1.balance data
    
     Java -jar LibD3C-1.0 -C fold-num trainFile
