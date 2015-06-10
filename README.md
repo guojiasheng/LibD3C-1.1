@@ -7,8 +7,9 @@ usage:
  
  Usage is the same no mater windows or Linux
  
- (1)download the LibD3C-1.0.jar and classifier.xml(This file includes all base classifiers for LibD3C-1.0,you can even add other base classifier by yourself)
- (2)CrossValidation
+(1)download the LibD3C-1.0.jar and classifier.xml(This file includes all base classifiers for LibD3C-1.0,you can even add other base classifier by yourself)
+
+(2)CrossValidation
  2.1.balance data
     Java -jar LibD3C-1.0 -C fold-num trainFile
     
@@ -17,6 +18,7 @@ usage:
     
 fold-num is the crossValiditon folds.
 trainFile is the file path for the training data,softWare can only identify .arff file
+
 (3)prediction
  3.1.balance data
     Java -jar LibD3C-1.0 -p trainFile predictFile resultFile
