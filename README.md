@@ -32,7 +32,7 @@ Balance data
 
 Imbalance data
 
- Java -jar LibD3C_1.1.jar -m -t trainFile
+    Java -jar LibD3C_1.1.jar -m -t trainFile
 
      
 -t means train model and the model would be saved in the same filePath(train.model) 
@@ -42,11 +42,11 @@ Imbalance data
 
 Balance data
 
- Java -jar LibD3C_1.1.jar -p train.model testFile resultFile
+    Java -jar LibD3C_1.1.jar -p train.model testFile resultFile
 
 Imbalance data
 
-Java -jar LibD3C_1.1.jar -m -p train.model testFile resultFile
+    Java -jar LibD3C_1.1.jar -m -p train.model testFile resultFile
 
    -p means prediction and train.model is the filePath you trained before
 ,trainFile is the file path for the training data, resultFile is the file path save prediction result
