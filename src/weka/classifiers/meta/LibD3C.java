@@ -89,16 +89,16 @@ public class LibD3C extends RandomizableMultipleClassifiersCombiner implements
 
 	protected int timeOut = 20;
 
+	public boolean getflag_im() {
+		return flag_im;
+	}
+
+	public void setflag_im(boolean flag_im) {
+		flag_im = flag_im;
+	}
+
 	public int getNumClusters() {
 		return numClusters;
-	}
-
-	public String getClassifiersFilePath() {
-		return classifiersxml;
-	}
-
-	public void setClassifiersFilePath(String classifiersxml) {
-		this.classifiersxml = classifiersxml;
 	}
 
 	public void setNumClusters(int num) {
@@ -275,9 +275,6 @@ public class LibD3C extends RandomizableMultipleClassifiersCombiner implements
 		options[current++] = "-num-slots";
 		options[current++] = "" + this.getNumExecutionSlots();
 
-		options[current++] = "-classifiers-xml";
-		options[current++] = "" + this.getClassifiersFilePath();
-
 		options[current++] = "-time-out";
 		options[current++] = "" + this.getTimeOut();
 
@@ -307,7 +304,6 @@ public class LibD3C extends RandomizableMultipleClassifiersCombiner implements
 				"selective-algorithm", options), TAGS_SELECTIVEALGORITHM));
 		this.setNumExecutionSlots(Integer.parseInt(Utils.getOption("num-slots",
 				options)));
-		this.setClassifiersFilePath(Utils.getOption("classifiers-xml", options));
 		this.setTimeOut(Integer.parseInt(Utils.getOption("time-out", options)));
 
 		String seed = Utils.getOption('S', options);
@@ -783,9 +779,10 @@ public class LibD3C extends RandomizableMultipleClassifiersCombiner implements
 	}
 
 	public static void main(String[] argv) throws Exception {
-		//String[] argv = "-m -p D://bupa.arff D://bupa.arff D://gjs.txt".split(" ");
-		String TrainFilePath = null, TestFilePath = null, cvNum = null, resultFilePath = null;
+		//String[] argv = "-c 5 D://bupa.arff".split(" ");
+		String TrainFilePath = null, cvNum = null, TestFilePath = null, modelPath = null, resultFilePath = null;
 		boolean cross = false;
+		boolean train = false;
 		boolean predict = false;
 		TrainFilePath = argv[0];
 		try {
@@ -796,8 +793,11 @@ public class LibD3C extends RandomizableMultipleClassifiersCombiner implements
 					cross = true;
 					cvNum = argv[2];
 					TrainFilePath = argv[3];
-				} else if (argv[1].equals("-p")) {
+				} else if (argv[1].equals("-t")) {
 					TrainFilePath = argv[2];
+					train = true;
+				} else if (argv[1].equals("-p")) {
+					modelPath = argv[2];
 					TestFilePath = argv[3];
 					resultFilePath = argv[4];
 					predict = true;
@@ -806,8 +806,13 @@ public class LibD3C extends RandomizableMultipleClassifiersCombiner implements
 				if (argv[0].equals("-c")) {
 					cvNum = argv[1];
 					TrainFilePath = argv[2];
-				} else if (argv[0].equals("-p")) {
+					cross = true;
+				} else if (argv[0].equals("-t")) {
 					TrainFilePath = argv[1];
+					train = true;
+					
+				} else if (argv[0].equals("-p")) {
+					modelPath = argv[1];
 					TestFilePath = argv[2];
 					resultFilePath = argv[3];
 					predict = true;
@@ -815,49 +820,37 @@ public class LibD3C extends RandomizableMultipleClassifiersCombiner implements
 			}
 
 			InstanceUtil iu = new InstanceUtil();
-			Instances input = iu.getInstances(TrainFilePath);
-			input.setClassIndex(input.numAttributes() - 1);
+			
 			BaseClassifiersEnsemble tt = new BaseClassifiersEnsemble();
 
 			LibD3C d3c = new LibD3C();
-			d3c.ListChange();
 			if (flag_im == true) {
-				if (predict) {
-					Instances test = iu.getInstances(TestFilePath);
-					test.setClassIndex(input.numAttributes() - 1);
-					d3c.buildClassifier(input);
-					BufferedWriter writer = new BufferedWriter(new FileWriter(
-							resultFilePath));
-					for (int j = 0; j < test.numInstances(); j++) {
-						writer.write(String.valueOf(d3c.classifyInstance(test
-								.get(j))) + ",");
-						writer.write(String.valueOf(test.get(j).classValue()));
-						writer.newLine();
-					}
-					writer.flush();
-					writer.close();
-				} else {
+				if (train) {
+					d3c.ListChange();
+					Instances input = iu.getInstances(TrainFilePath);
+					input.setClassIndex(input.numAttributes() - 1);
+					iu.SaveModel(d3c, input);
+				} else if (cross) {
+					d3c.ListChange();
+					Instances input = iu.getInstances(TrainFilePath);
+					input.setClassIndex(input.numAttributes() - 1);
 					Evaluation eval = new Evaluation(input);
-					eval.crossValidateModel(d3c, input,Integer.parseInt(cvNum), new Random(d3c.getSeed()));
+					eval.crossValidateModel(d3c, input,
+							Integer.parseInt(cvNum), new Random(d3c.getSeed()));
 					d3c.printInfo(eval);
+				} else if (predict) {
+					iu.LoadModel(modelPath, TestFilePath, resultFilePath);
 				}
 			} else {
-				d3c.ListChange();
-				if (predict) {
-					Instances test = iu.getInstances(TestFilePath);
-					d3c.buildClassifier(input);
-					test.setClassIndex(input.numAttributes() - 1);
-					BufferedWriter writer = new BufferedWriter(new FileWriter(
-							resultFilePath));
-					for (int j = 0; j < test.numInstances(); j++) {
-						writer.write(String.valueOf(d3c.classifyInstance(test
-								.get(j))) + ",");
-						writer.write(String.valueOf(test.get(j).classValue()));
-						writer.newLine();
-					}
-					writer.flush();
-					writer.close();
-				} else {
+				if (train) {
+					d3c.ListChange();
+					Instances input = iu.getInstances(TrainFilePath);
+					input.setClassIndex(input.numAttributes() - 1);
+					iu.SaveModel(d3c, input);
+				} else if (cross){
+					d3c.ListChange();
+					Instances input = iu.getInstances(TrainFilePath);
+					input.setClassIndex(input.numAttributes() - 1);
 					Evaluation eval = new Evaluation(input);
 					eval.crossValidateModel(d3c, input,
 							Integer.parseInt(cvNum), new Random(d3c.getSeed()));
@@ -869,8 +862,11 @@ public class LibD3C extends RandomizableMultipleClassifiersCombiner implements
 					}
 					d3c.printInfo(eval);
 				}
+				else if (predict) {
+					iu.LoadModel(modelPath, TestFilePath, resultFilePath);
+				}
 			}
-			input = null;
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("命令格式或数据不对");
