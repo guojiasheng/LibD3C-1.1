@@ -25,10 +25,13 @@ trainFile is the file path for the training data,softWare can only identify .arf
 3.prediction
 
 (1)train model
+
 Balance data
+
 Java -jar LibD3C_1.1.jar -t trainFile
 
 Imbalance data
+
 Java -jar LibD3C_1.1.jar -m -t trainFile
 
      
@@ -36,10 +39,13 @@ Java -jar LibD3C_1.1.jar -m -t trainFile
 ,trainFile is the file path for the training data,resultFile is the file path save prediction result
 
 (2)predict instance
+
 Balance data
+
 Java -jar LibD3C_1.1.jar -p train.model testFile resultFile
 
 Imbalance data
+
 Java -jar LibD3C_1.1.jar -m -p train.model testFile resultFile
 
    -p means prediction and train.model is the filePath you trained before
