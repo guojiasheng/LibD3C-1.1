@@ -13,11 +13,11 @@ usage:
 
  2.1.balance data
    
-    Java -jar LibD3C_1.0.jar -c fold-num trainFile
+     Java -jar LibD3C_1.0.jar -c fold-num trainFile
     
  2.2.imbalance data    
    
-    Java -jar LibD3C_1.0.jar -m -c fold-num trainFile
+     Java -jar LibD3C_1.0.jar -m -c fold-num trainFile
     
 fold-num is the crossValiditon folds.
 trainFile is the file path for the training data,softWare can only identify .arff file
@@ -28,7 +28,7 @@ trainFile is the file path for the training data,softWare can only identify .arf
 
 Balance data
 
- Java -jar LibD3C_1.1.jar -t trainFile
+    Java -jar LibD3C_1.1.jar -t trainFile
 
 Imbalance data
 
