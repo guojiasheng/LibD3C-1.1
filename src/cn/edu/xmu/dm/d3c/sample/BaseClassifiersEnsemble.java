@@ -25,28 +25,38 @@ public class BaseClassifiersEnsemble {
 		switch (iselectiveAlgorithm) {
 		case 1 :
 			selectiveAlgorithm = "HCNRR";
+                        break;
 		case 2:
 			selectiveAlgorithm = "HCRR";
+                         break;
 		case 3:
 			selectiveAlgorithm = "EFSS";
+                         break;
 		case 4:
 			selectiveAlgorithm = "EBSS";
+                         break;
 		case 5:
 			selectiveAlgorithm = "CC";
+                         break;
 		case 6:
 			selectiveAlgorithm = "DS";
+                         break;
 			
 		}
 		
 		switch(iCCAlgorithm) {
 		case 1:
 			CCAlgorithm = "HCNRR";
+                         break;
 		case 2:
 			CCAlgorithm = "HCRR";
+                         break;
 		case 3:
 			CCAlgorithm = "EFSS";
+                         break;
 		case 4:
 			CCAlgorithm = "EBSS";
+                          break;
 		}
 		
 		List<Integer> chooseClassifiers = ClassifyResultArffLoader
