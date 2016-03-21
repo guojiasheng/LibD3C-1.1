@@ -24,22 +24,22 @@ public class BaseClassifiersEnsemble {
 
 		switch (iselectiveAlgorithm) {
 		case 1 :
-			selectiveAlgorithm = "HCNRR";
+			selectiveAlgorithm = "CC";
                         break;
 		case 2:
-			selectiveAlgorithm = "HCRR";
+			selectiveAlgorithm = "DS";
                          break;
 		case 3:
-			selectiveAlgorithm = "EFSS";
+			selectiveAlgorithm = "HCNRR";
                          break;
 		case 4:
-			selectiveAlgorithm = "EBSS";
+			selectiveAlgorithm = "HCRR";
                          break;
 		case 5:
-			selectiveAlgorithm = "CC";
+			selectiveAlgorithm = "EFSS";
                          break;
 		case 6:
-			selectiveAlgorithm = "DS";
+			selectiveAlgorithm = "EBSS";
                          break;
 			
 		}

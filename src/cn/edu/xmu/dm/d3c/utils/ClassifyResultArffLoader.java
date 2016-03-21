@@ -3,9 +3,13 @@ package cn.edu.xmu.dm.d3c.utils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -326,4 +330,19 @@ public class ClassifyResultArffLoader {
 		}
 		return chooseClassifiers;
 	}
+	
+	public static void convertToArff(String file) throws IOException{
+		BufferedReader InputBR = new BufferedReader(new InputStreamReader(new FileInputStream(file), "utf-8"));
+		String InputLine = InputBR.readLine();
+		String[] dataString;
+		while(InputLine != null)
+		{
+			dataString = InputLine.split(" ");
+			
+			InputLine = InputBR.readLine();
+		}
+		InputBR.close();
+		
+	}
+	
 }

@@ -10,6 +10,7 @@ import weka.core.Instances;
 import cn.edu.xmu.dm.d3c.clustering.KMeanz;
 import cn.edu.xmu.dm.d3c.core.Parameterz;
 import cn.edu.xmu.dm.d3c.utils.ClassifyResultArffLoader;
+import cn.edu.xmu.dm.d3c.utils.InitClassifiers;
 
 public class BaseClassifiersClustering {
 
@@ -32,7 +33,16 @@ public class BaseClassifiersClustering {
 			writer.write(chooseClassifiers.get(i).toString());
 			writer.newLine();
 		}
+		BufferedWriter writePro = new BufferedWriter(new FileWriter(
+				".choosefileDetail"));
+		
+		for	(int i=0;i< chooseClassifiers.size();i++){
+			writePro.write("name: "+InitClassifiers.classifiersName[chooseClassifiers.get(i)]+" paramter:"+InitClassifiers.paramter.get(chooseClassifiers.get(i)));
+			writePro.newLine();
 
+		}
+		writePro.flush();
+		writePro.close();
 		writer.flush();
 		writer.close();
 		

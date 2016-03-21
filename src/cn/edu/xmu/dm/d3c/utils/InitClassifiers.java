@@ -22,6 +22,7 @@ import weka.classifiers.lazy.IBk;
  */
 public class InitClassifiers {
 	public static String[] classifiersName;
+	public static List<String> paramter=new ArrayList<String>();
 	public static ArrayList<String> classifiersOption=new ArrayList<String>();
 	static public Classifier[] init(
 			String filePath,
@@ -50,9 +51,10 @@ public class InitClassifiers {
 						.elementText("class").trim();
 				String option = foo.element("parameter").elementText("options")
 						.trim();
-
-				logger.info("classifierName:" + classifierName);
-				logger.info("options:" + option);
+				
+				paramter.add(option);
+			//	logger.info("classifierName:" + classifierName);
+				//logger.info("options:" + option);
 
 				//System.out.println("classifierName:" + classifierName);
 				//System.out.println("options:" + option);

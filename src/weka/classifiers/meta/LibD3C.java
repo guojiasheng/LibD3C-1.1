@@ -1,6 +1,7 @@
 package weka.classifiers.meta;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -17,6 +18,7 @@ import weka.core.EnvironmentHandler;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.Option;
+import weka.core.converters.*;
 import weka.core.OptionHandler;
 import weka.core.RevisionUtils;
 import weka.core.SelectedTag;
@@ -65,14 +67,6 @@ public class LibD3C extends RandomizableMultipleClassifiersCombiner implements
 			new Tag(4, "EFSS"), new Tag(5, "EBSS") };
 
 	protected int m_CircleCombine_Type = 1;
-
-	// protected Tag[] TAGS_RULES = {
-	// new Tag(1, "AVG", "Average of Probabilities"),
-	// new Tag(2, "PROD", "Product of Probabilities"),
-	// new Tag(3, "MAJ", "Majority Voting"),
-	// new Tag(4, "MIN", "Minimum Probability"),
-	// new Tag(5, "MAX", "Maximum Probability"),
-	// new Tag(6, "MED", "Median Voting") };
 
 	protected Tag[] TAGS_RULES = { new Tag(1, "Average of Probabilities"),
 			new Tag(2, "Product of Probabilities"),
@@ -382,6 +376,7 @@ public class LibD3C extends RandomizableMultipleClassifiersCombiner implements
 			String fchooseClassifiers = pathPrefix + "chooseClassifiers.txt";
 			List<Integer> chooseClassifiers = bcc.clusterBaseClassifiers(
 					fchooseClassifiers, this.numClusters);
+	        
 			BaseClassifiersEnsemble bce = new BaseClassifiersEnsemble();
 			ensemClassifiers = bce.EnsembleClassifiers(data,
 					m_SelectiveAlgorithm_Type, m_CircleCombine_Type);
@@ -779,13 +774,21 @@ public class LibD3C extends RandomizableMultipleClassifiersCombiner implements
 	}
 
 	public static void main(String[] argv) throws Exception {
-		//String[] argv = "-c 5 D://bupa.arff".split(" ");
-		String TrainFilePath = null, cvNum = null, TestFilePath = null, modelPath = null, resultFilePath = null;
+		
+		//String x="-c 2 D://MEKA.libsvm";
+	//	argv=x.split(" ");
+		 String TrainFilePath = null, cvNum = null, TestFilePath = null, modelPath = null, resultFilePath = null;
+		
+		//int SelectiveAlgorithm_Type=2;
+		
+		 BufferedWriter writeRate = new BufferedWriter(new FileWriter(".correctly"));
+		 
 		boolean cross = false;
 		boolean train = false;
 		boolean predict = false;
-		TrainFilePath = argv[0];
+		
 		try {
+			TrainFilePath = argv[0];
 			if (argv[0].equals("-m")) {
 				flag_im = true;
 				if (argv[1].equals("-c")) {
@@ -806,15 +809,18 @@ public class LibD3C extends RandomizableMultipleClassifiersCombiner implements
 				if (argv[0].equals("-c")) {
 					cvNum = argv[1];
 					TrainFilePath = argv[2];
+					///SelectiveAlgorithm_Type = Integer.parseInt(argv[3]);
 					cross = true;
 				} else if (argv[0].equals("-t")) {
 					TrainFilePath = argv[1];
+					//SelectiveAlgorithm_Type = Integer.parseInt(argv[3]);
 					train = true;
 					
 				} else if (argv[0].equals("-p")) {
 					modelPath = argv[1];
 					TestFilePath = argv[2];
-					resultFilePath = argv[3];
+					resultFilePath = ".predict";
+					//SelectiveAlgorithm_Type = Integer.parseInt(argv[4]);
 					predict = true;
 				}
 			}
@@ -822,21 +828,49 @@ public class LibD3C extends RandomizableMultipleClassifiersCombiner implements
 			InstanceUtil iu = new InstanceUtil();
 			
 			BaseClassifiersEnsemble tt = new BaseClassifiersEnsemble();
-
 			LibD3C d3c = new LibD3C();
+			
+			try{
+				  boolean fileChange =  iu.convertToArff(TrainFilePath);
+				  if (fileChange){
+			    	  TrainFilePath = "temp.arff";
+			       }
+				}
+				catch (Exception e) {
+				     System.out.println("文件格式转换失败");
+				}
+	     
+	       
+			
+	
+			
+		//	d3c.m_SelectiveAlgorithm_Type =SelectiveAlgorithm_Type;
+	       Instances input = null;
 			if (flag_im == true) {
 				if (train) {
 					d3c.ListChange();
-					Instances input = iu.getInstances(TrainFilePath);
+					try{
+					    input = iu.getInstances(TrainFilePath);
+					}
+					catch (Exception e) {
+						 System.out.println("找不到文件路径");
+					}
 					input.setClassIndex(input.numAttributes() - 1);
 					iu.SaveModel(d3c, input);
+					
 				} else if (cross) {
 					d3c.ListChange();
-					Instances input = iu.getInstances(TrainFilePath);
+					try{
+					   input = iu.getInstances(TrainFilePath);
+					}
+					catch (Exception e) {
+							 System.out.println("找不到文件路径");
+					}
 					input.setClassIndex(input.numAttributes() - 1);
+						
 					Evaluation eval = new Evaluation(input);
 					eval.crossValidateModel(d3c, input,
-							Integer.parseInt(cvNum), new Random(d3c.getSeed()));
+						Integer.parseInt(cvNum), new Random(d3c.getSeed()));
 					d3c.printInfo(eval);
 				} else if (predict) {
 					iu.LoadModel(modelPath, TestFilePath, resultFilePath);
@@ -844,22 +878,30 @@ public class LibD3C extends RandomizableMultipleClassifiersCombiner implements
 			} else {
 				if (train) {
 					d3c.ListChange();
-					Instances input = iu.getInstances(TrainFilePath);
+					try{
+						   input = iu.getInstances(TrainFilePath);
+					}
+					catch (Exception e) {
+							 System.out.println("找不到文件路径");
+					}
 					input.setClassIndex(input.numAttributes() - 1);
 					iu.SaveModel(d3c, input);
 				} else if (cross){
 					d3c.ListChange();
-					Instances input = iu.getInstances(TrainFilePath);
+					try{
+						   input = iu.getInstances(TrainFilePath);
+					}
+					catch (Exception e) {
+								 System.out.println("找不到文件路径");
+					}
 					input.setClassIndex(input.numAttributes() - 1);
 					Evaluation eval = new Evaluation(input);
+				
 					eval.crossValidateModel(d3c, input,
 							Integer.parseInt(cvNum), new Random(d3c.getSeed()));
-					System.out.println("-------集成的分类器为：------------");
-
-					for (Integer index : tt.classifer) {
-						System.out.println(d3c.pathOfClassifiers.get(index)
-								+ " " + d3c.Option.get(index));
-					}
+					writeRate.write(String.valueOf(1-eval.errorRate()));
+					writeRate.flush();
+					writeRate.close();
 					d3c.printInfo(eval);
 				}
 				else if (predict) {
@@ -869,7 +911,15 @@ public class LibD3C extends RandomizableMultipleClassifiersCombiner implements
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			System.out.println("命令格式或数据不对");
+			System.out.println("命令格式");
+			System.out.println("Usage: JAVA -jar [option] [option]....");
+			System.out.println("-c fold --------crossValidation");
+			System.out.println("-t -------trainModel");
+			System.out.println("-p modelPath -----predict");
+			System.out.println("Usage:");
+			System.out.println("-crossValidation:  JAVA -jar libD3c.jar -c 5 filePath");
+			System.out.println("-trainModel:  JAVA -jar libD3c.jar -t  filePath(train)");
+			System.out.println("-predictTest:  JAVA -jar libD3c.jar -p train.model filePath(test)");
 			e.printStackTrace();
 		}
 

@@ -7,12 +7,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import weka.classifiers.Classifier;
@@ -30,6 +34,67 @@ public class InstanceUtil {
 
 	public String pathPrefix = "Model";
 
+	
+	public static boolean convertToArff(String file) throws IOException{
+		BufferedReader InputBR = new BufferedReader(new InputStreamReader(new FileInputStream(file), "utf-8"));
+		String InputLine = InputBR.readLine();
+		
+		if(InputLine.contains("@relation") || InputLine.contains("@Relation")){
+			return false;
+		}
+		
+			
+		String[] dataString;
+		HashSet<String> lable = new <String>HashSet();
+		ArrayList<String> lableValue = new ArrayList<String>();
+		ArrayList<ArrayList<String>> value = new ArrayList<ArrayList<String>>();
+		ArrayList<String> temp = null;
+		int attributes=0;
+		boolean firstLine=true;
+		while(InputLine != null)
+		{
+			dataString = InputLine.split(" ");
+			if(firstLine){
+				attributes=dataString.length-1;
+				firstLine=false;
+			}
+			lable.add(dataString[0]);
+			lableValue.add(dataString[0]);
+			temp = new ArrayList<String>();
+			for(int i=1;i<dataString.length;i++){
+				String v = dataString[i].substring(2, dataString[i].length());
+				temp.add(v);
+			}
+			value.add(temp);
+			InputLine = InputBR.readLine();
+		}
+		InputBR.close();
+		BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("temp.arff"), false), "utf-8"));
+		bufferedWriter.write("@relation temp.arff"+"\n");
+		int i,j=0;
+		for(i=0;i<attributes;i++){
+			bufferedWriter.write("@attribute "+i+"  numeric"+"\n");
+		}
+		bufferedWriter.write("@attribute class {");
+		String classAttribute="";
+		for(String la: lable){
+			classAttribute+=(la+",");
+		}
+		classAttribute=classAttribute.substring(0, classAttribute.length()-1);
+		bufferedWriter.write(classAttribute+ "}"+"\n");
+		
+		bufferedWriter.write("@data"+"\n");
+		for(i=0;i<value.size();i++){
+			ArrayList<String> tempValue = value.get(i);
+			for(j=0;j<tempValue.size();j++){
+				bufferedWriter.write(tempValue.get(j)+",");
+			}
+			bufferedWriter.write(lableValue.get(i)+"\n");
+		}
+		bufferedWriter.close();
+		return true;
+	}
+	
 	//
 	/*
 	 * 通过文件名的字符串获得实例
@@ -246,9 +311,14 @@ public class InstanceUtil {
 
 			BufferedWriter writer = new BufferedWriter(new FileWriter(
 					resultFilePath));
+			
+			BufferedWriter writePro = new BufferedWriter(new FileWriter(
+					".probility"));
 			writer.write("predcition	" + "origin classs");
 			writer.newLine();
 			for (int j = 0; j < data.numInstances(); j++) {
+				writePro.write(String.valueOf(c1.distributionForInstance(data.get(j))[1]));
+				writePro.newLine();
 				writer.write(String.valueOf(c1.classifyInstance(data.get(j)))
 						+ ",");
 				writer.write(String.valueOf(data.get(j).classValue()));
@@ -256,6 +326,8 @@ public class InstanceUtil {
 			}
 			writer.flush();
 			writer.close();
+			writePro.flush();
+			writePro.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
